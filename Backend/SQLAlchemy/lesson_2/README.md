@@ -1,4 +1,4 @@
-# Lesson 4: Database Relationships and Cascade Deletion
+# Lesson 2: Database Relationships and Cascade Deletion
 
 ## Key Skills Acquired
 
