@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unknown title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-white p-6 h-screen">
+<div>
+    <header>
+  <h1 class="text-cync-400 text-3xl font-bold">Cyber Club</h1>
+  <h2 class="text-emerald-400 text-lg font-semibold"><strong>Welcome!</strong></h2>
+    </header>
+    <main>
+        <section>
+  <p>We work <strong>every</strong> day so just book a computer and <strong>enjoy playing!</strong></p>
+  <h3>Here is info about us:</h3>
+  <img src="cool_comp.png" alt="logo" class="my-4">
+    <a href="https://vk.com"> Here is our VK group </a>
+    <h4>Additional info</h4>
+    <button class="mt-3 bg-cyan-500 text-violet-950 font-bold py-2 px-4 rounded-xl cursor-pointer">Check schedule of computers</button>
+            <div class="flex gap-4 bg-violet-800 p-4 rounded-xl">
+                <div>🎮 <span class="text-stone-400 opacity-30">GPU</span> <strong class="text-amber-400">RTX 4080</strong></div>
+                <div>🧠 <span class="text-indigo-400 opacity-70">CPU</span> <strong class="text-rose-400">Intel i7</strong></div>
+            </div>
+    <label>Choose the desirable time:</label>
+    <select>
+        <option value="1 hour">1 hour - 150 rubles</option>
+        <option value="3 hours" selected>3 hours - 400 rubles(beneficial)</option>
+        <option value="night">Night mode - 600 rubles</option>
+    </select>
+    <div class="flex items-center gap-2 mt-4">
+        <input type="checkbox" class="h-5 w-5 accent-orange-500 cursor-pointer">
+        <label class="text-sm text-fuchsia-300">I agree with Club Rules</label>
+    </div>
+            <button class="w-full mt-4 bg-cyan-500 text-slate-950 font-bold py-2 rounded-xl cursor-pointer">Book Now</button>
+            <button class="w-full mt-4 bg-stone-700 text-stone-400 border-2 border-dashed py-2 cursor-not-allowed" disabled>
+                No seats available(just a block-pattern)
+            </button>
+            </section>
+        <section>
+          <h2>How to find us?</h2>
+          <p>We are located right in the center of the city</p>
+            <iframe src="https://example.com" width="300" height="200"></iframe>
+            <video width="300" controls>
+                <source src="conclusion_sim.mp4" type="video/mp4">
+
+            </video>
+        </section>
+           <section>
+               <div class="mt-4">
+                  <label class="block text-sm font-medium text-teal-400 mb-1">Your Name:</label>
+                  <input type="text" placeholder="Enter your name" class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400">
+               </div>
+               <h2>Write here your selected time</h2>
+             <input type="time">
+           </section>
+           <section>
+               <h2>Write here your review about us!</h2>
+               <textarea>Write here your review</textarea>
+           </section>
+        </main>
+    <footer>
+        <p><small>All copyrights are unique and cannot be prohibited or stolen</small></p>
+    </footer>
+</div>
+</body>
+</html>
