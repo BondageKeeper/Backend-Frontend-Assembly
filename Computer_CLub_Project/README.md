@@ -7,6 +7,7 @@ I had a bunch of troubles but over time I resolved them and now can avoid some s
 
 ## 📷How the it looks:
 <img width="1918" height="978" alt="first_site_cover" src="https://github.com/user-attachments/assets/f548971a-9247-4740-802e-e8267ce69f6e" />
+<img width="1918" height="900" alt="second_site_cover" src="https://github.com/user-attachments/assets/d0e02207-477c-4d8b-bd1f-3c068bf7caf3" />
 
 ## 🛠️ Used tools(crucial libraries):
 * **SQLAlchemy** - The most important tool to create tables , to make relationships between tables via ORM and to store users data. 
