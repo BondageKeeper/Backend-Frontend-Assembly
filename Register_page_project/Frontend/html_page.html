@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign-up-page</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="h-screen p-0 m-0 bg-[#e0b0d5]">
+<main class="flex flex-col items-center justify-center min-h-screen gap-4 text-3xl">
+    <div class="flex flex-col gap-3 w-full max-w-sm px-4">
+    <div class="flex flex-col gap-1 w-full">
+        <div class="flex justify-between items-baseline">
+        <label class="text-lg font-medium text-[#aee5d8]">nickname:</label>
+        <span id="nickname_check" class="text-xs text-red-400 hidden">Minimum 3 characters required</span>
+        </div>
+        <input type="text" id="nickname_input" class="rounded-lg bg-transparent text-[#e7e5e5] border-3
+        border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+        <div class="flex justify-between items-baseline">
+        <label class="text-lg font-medium text-[#aee5d8]">email:</label>
+        <span id="email_error" class="text-xs text-red-400 hidden">Use only gmail.com or yandex.ru domens</span>
+        </div>
+        <input type="text" id="email_input" class="rounded-lg bg-transparent text-[#e7e5e5] border-3
+        border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+        <div class="flex justify-between items-baseline">
+        <label class="text-lg font-medium text-[#aee5d8]">password:</label>
+        <span id="security_estimation" class="text-xs text-red-400 hidden">Minimum 4 characters required</span>
+        </div>
+        <input type="text" id="password_input" class="rounded-lg bg-transparent text-[#e7e5e5] border-3
+        border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
+    </div>
+        <div>
+        <button type="submit" id="sign-up_button" class="block mx-auto bg-[#e7e5e5] text-[#7be0ad] uppercase tracking-wider
+        rounded-xl border-2 border-[#e7e5e5] active:scale-[0.98] shadow-md cursor-pointer mt-5 py-1.5 px-12 hover:border-[#7be0ad]
+        transition_all disabled:pointer-events-none">Sign-up</button>
+        </div>
+    </div>
+</main>
+<script>
+
+    const NicknameInput = document.getElementById('nickname_input');
+    const EmailInput = document.getElementById('email_input');
+    const PasswordInput = document.getElementById('password_input');
+    const EmailError = document.getElementById('email_error');
+    const SecurityEstimation = document.getElementById('security_estimation');
+    const NicknameCheck = document.getElementById('nickname_check');
+    const SignUpButton = document.getElementById('sign-up_button');
+
+    const dependentButton = [
+    document.getElementById('sign-up_button'),
+    ];
+
+    function checkFields() {
+        const emailRegex = /^[\w\-.]+@(?:gmail\.com|yandex\.ru)$/;
+        const currentEmailValue = EmailInput.value.trim();
+        const currentNicknameValue = NicknameInput.value.trim();
+        const isPasswordFilled = PasswordInput.value.trim() !== '';
+        const isEmailValid = emailRegex.test(EmailInput.value.trim());
+
+        if (currentEmailValue !== '' && !isEmailValid) {
+            EmailError.classList.remove('hidden');
+        } else {
+            EmailError.classList.add('hidden');
+        }
+
+        let isNicknameValid = false;
+        const nicknameLength = currentNicknameValue.length;
+        if (nicknameLength < 3) {
+            NicknameCheck.classList.remove('hidden');
+        } else {
+            NicknameCheck.classList.add('hidden')};
+            isNicknameLength = true;
+
+        const currentPasswordValue = PasswordInput.value;
+        const hasLetters = /[a-zA-Z]/.test(currentPasswordValue);
+        const hasDigits = /[0-9]/.test(currentPasswordValue);
+        const passwordLength = currentPasswordValue.length;
+
+        let isPasswordValid = false;
+        SecurityEstimation.classList.remove('text-red-400','text-orange-400','text-green-400');
+        if (passwordLength === 0) {
+            SecurityEstimation.classList.add('hidden');
+        } else {
+            SecurityEstimation.classList.remove('hidden');
+            if (passwordLength < 4) {
+                SecurityEstimation.innerText = 'Minimum 4 characters required';
+                SecurityEstimation.classList.add('text-red-400');
+            }
+            else if (passwordLength >= 4 && passwordLength < 6) {
+                SecurityEstimation.innerText = 'Weak Password';
+                SecurityEstimation.classList.add('text-red-400');
+
+            }
+            else if (passwordLength >= 6 && passwordLength < 8) {
+                if (hasLetters && hasDigits) {
+                    SecurityEstimation.innerText = 'Medium Password';
+                    SecurityEstimation.classList.add('text-orange-400');
+                    isPasswordValid = true;
+                } else {
+                    SecurityEstimation.innerText = 'Weak Password';
+                    SecurityEstimation.classList.add('text-red-400');
+                }
+            }
+            else if (passwordLength >= 8) {
+                if (hasLetters && hasDigits) {
+                    SecurityEstimation.innerText = 'Excellent Password';
+                    SecurityEstimation.classList.add('text-green-400');
+                    isPasswordValid = true;
+                } else {
+                    SecurityEstimation.innerText = 'Medium Password';
+                    SecurityEstimation.classList.add('text-orange-400');
+                    isPasswordValid = true;
+                }
+        }
+        }
+    dependentButton.forEach(button => {
+        button.disabled = !(nicknameLength && isEmailValid && isPasswordValid);
+    })
+    }
+
+    NicknameInput.addEventListener('input',checkFields);
+    EmailInput.addEventListener('input',checkFields);
+    PasswordInput.addEventListener('input',checkFields);
+
+    checkFields();
+
+    fetch('http://127.0.0.1:8080',
+        method: 'POST',
+        headers: {
+        'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(
+            nickname: NicknameInput.value.trim(),
+            email: EmailInput.value.trim(),
+            password: PasswordInput.value
+        )
+    })
+    
+</script>
+</body>
+</html>
