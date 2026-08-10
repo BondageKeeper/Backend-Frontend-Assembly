@@ -1,5 +1,4 @@
-from fastapi import HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession , create_async_engine , async_sessionmaker
+ from sqlalchemy.ext.asyncio import AsyncSession , create_async_engine , async_sessionmaker
 from sqlalchemy.orm import  Mapped , mapped_column , DeclarativeBase
 from datetime import datetime
 from Backend_password_page.app.instance_password_page import TableFrameworkCO , TableSignInCO
@@ -43,4 +42,11 @@ async def get_user_email(email: str,session: AsyncSession):
     if found_email is None:
         return None
     return found_email
+
+from sqlalchemy import update
+async def update_user_password(nickname: str,new_hash: str,session: AsyncSession):
+    request = update(TableFrameworkCO).where(TableFrameworkDB.nickname == nickname).values(password=new_hash)
+    await session.execute(request)
+    await session.commit()
+
 
