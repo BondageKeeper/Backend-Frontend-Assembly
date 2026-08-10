@@ -13,6 +13,15 @@ class TableFrameworkCO(BaseModel):
             raise ValueError('Please , use yandex.ru or gmail.com domens!')
         return email
 
-class PresentCredentials(BaseModel):
-    nickname: str = Field(min_length=2,max_length=20)
+class TableSignInCO(BaseModel):
+    email: str
     password: str
+    @field_validator("email")
+    @classmethod
+    def check_domen(cls,email: str):
+        import re
+        if not re.findall(r'[\w\-.]+@(?:gmail\.com|yandex\.ru)',email):
+            raise ValueError('Please , use yandex.ru or gmail.com domens!')
+        return email
+
+
