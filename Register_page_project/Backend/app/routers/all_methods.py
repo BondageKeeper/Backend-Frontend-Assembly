@@ -1,9 +1,12 @@
-from fastapi import HTTPException , APIRouter , status , Depends
+ from fastapi import HTTPException , APIRouter , status , Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from Backend_password_page.app.crud_password_page import keep_open_database
-from Backend_password_page.app.instance_password_page import TableFrameworkCO , TableSignInCO
+from Backend_password_page.app.instance_password_page import TableFrameworkCO , TableSignInCO , TableForgotPasswordCO
 from Backend_password_page.app import crud_password_page
+from Backend_password_page.app.email_sender import send_recovery_email
 from Backend_password_page.app.hashed_password import hash_password , verify_password
+from faker import Faker
+fake = Faker('en_US')
 
 router = APIRouter(prefix='/password_page')
 
@@ -19,12 +22,38 @@ async def sign_in(instance: TableSignInCO,session: AsyncSession = Depends(keep_o
      user_email = instance.email
      found_email = await crud_password_page.get_user_email(user_email,session)
      if found_email is None:
-         raise HTTPException(status_code=404,detail="Email was not found!")
+         raise HTTPException(status_code=404,detail=": Email was not found!")
      else:
          written_parameters = instance.model_dump()
          if not verify_password(written_parameters["password"],found_email.password):
-              raise HTTPException(status_code=401,detail="Wrong Password!")
+              raise HTTPException(status_code=401,detail=": Wrong Password!")
          else:
-             return {"status":"Welcome","user":found_email.nickname}
+             return {
+                 "status_code" : 200,
+                 "comment" : f"Welcome back, {found_email.nickname}!"
+             }
+
+@router.post("/forgot_password")
+async def forgot_password(instance: TableForgotPasswordCO,session: AsyncSession = Depends(keep_open_database)):
+    user_email = instance.email
+    found_email = await crud_password_page.get_user_email(user_email,session)
+    if found_email is None:
+        raise HTTPException(status_code=404, detail=": Email was not found!")
+    else:
+        new_password = fake.bothify(text='??????????#####')
+        new_hashed_password = hash_password(new_password)
+        await crud_password_page.update_user_password(
+            nickname = found_email.nickname,
+            new_hash = new_hashed_password,
+            session = session
+        )
+    mail_sending = send_recovery_email(receiver_email=found_email.email,new_password=new_password)
+    if not mail_sending:
+        HTTPException(status_code=500,detail="Failed to send email. Try again later.....")
+    else:
+        return {
+            'status_code' : 200,
+            'comment' : 'a new password has been sent to your email!'
+        }
 
 
