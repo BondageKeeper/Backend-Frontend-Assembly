@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +7,11 @@
 </head>
 <body class="h-screen p-0 m-0 bg-[#e0b0d5]">
 <main class="flex flex-col items-center justify-center min-h-screen gap-4 text-3xl">
+    <button id="switch_mode_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium border-2 border-[#e7e5e5] active:scale-[0.98]
+    shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer px-5 py-2">Sign-in</button>
     <div class="flex flex-col gap-3 w-full max-w-sm px-4">
     <div class="flex flex-col gap-1 w-full">
-        <div class="flex justify-between items-baseline">
+        <div id="nickname_block" class="flex justify-between items-baseline">
         <label class="text-lg font-medium text-[#aee5d8]">nickname:</label>
         <span id="nickname_check" class="text-xs text-red-400 hidden">Minimum 3 characters required</span>
         </div>
@@ -33,7 +35,7 @@
         border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
     </div>
         <div>
-        <button type="submit" id="sign-up_button" class="block mx-auto bg-[#e7e5e5] text-[#7be0ad] uppercase tracking-wider
+        <button type="submit" id="sign-up_main_button" class="block mx-auto bg-[#e7e5e5] text-[#7be0ad] tracking-wider
         rounded-xl border-2 border-[#e7e5e5] active:scale-[0.98] shadow-md cursor-pointer mt-5 py-1.5 px-12 hover:border-[#7be0ad]
         transition_all disabled:pointer-events-none">Sign-up</button>
         </div>
@@ -47,7 +49,31 @@
     const EmailError = document.getElementById('email_error');
     const SecurityEstimation = document.getElementById('security_estimation');
     const NicknameCheck = document.getElementById('nickname_check');
-    const SignUpButton = document.getElementById('sign-up_button');
+
+    const SignUpButton = document.getElementById('sign-up_main_button');
+    const SwitchModeBtn = document.getElementById('switch_mode_button');
+    const NicknameBlock = document.getElementById('nickname_block');
+    let isSignUpMode = true;
+
+    SwitchModeBtn.addEventListener('click', () => {
+    isSignUpMode = !isSignUpMode;
+    if (isSignUpMode) {
+    NicknameBlock.classList.remove('hidden');
+    NicknameInput.classList.remove('hidden');
+    SwitchModeBtn.innerText = 'Sign-in';
+    SignUpButton.innerText = 'Sign-up';
+    } else {
+    NicknameBlock.classList.add('hidden');
+    NicknameInput.classList.add('hidden');
+    SwitchModeBtn.innerText = 'Sign-up';
+    SignUpButton.innerText = 'Sign-in';
+    }
+
+    NicknameInput.value = '';
+    EmailInput.value = '';
+    PasswordInput.value = '';
+
+    })
 
     const dependentButton = [
     document.getElementById('sign-up_button'),
@@ -127,17 +153,22 @@
 
     checkFields();
 
-    fetch('http://127.0.0.1:8080',
+    SignUpButton.addEventListener('click',() => {
+    fetch('http://127.0.0.1:8080/password_page/create_password', {
         method: 'POST',
         headers: {
         'Content-Type' : 'application/json'
         },
-        body: JSON.stringify(
+        body: JSON.stringify({
             nickname: NicknameInput.value.trim(),
             email: EmailInput.value.trim(),
             password: PasswordInput.value
-        )
+        })
     })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+    });
     
 </script>
 </body>
