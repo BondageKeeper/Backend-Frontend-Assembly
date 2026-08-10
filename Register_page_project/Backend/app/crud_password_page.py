@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession , create_async_engine , async_sessionmaker
 from sqlalchemy.orm import  Mapped , mapped_column , DeclarativeBase
 from datetime import datetime
-from Backend_password_page.app.instance_password_page import TableFrameworkCO , PresentCredentials
+from Backend_password_page.app.instance_password_page import TableFrameworkCO , TableSignInCO
 from sqlalchemy import select
 
 class AlchemyLaunch(DeclarativeBase):
@@ -36,14 +36,11 @@ async def create_password(instance: TableFrameworkCO,session: AsyncSession):
         "comment" : "successful connection!"
     }
 
-async def return_to_account(instance: PresentCredentials,session: AsyncSession):
-    nickname = instance.nickname
-    password = instance.password
-    request = select(TableFrameworkDB).where(TableFrameworkDB.nickname == nickname and TableFrameworkDB.password == password)
-    search_result = await session.execute(request)
-    user_data = search_result.scalar_one_or_none()
-    if user_data is None:
-        raise HTTPException(status_code=404,detail='nickname or password is incorrect')
-    else:
-        pass
+async def get_user_email(email: str,session: AsyncSession):
+    request = select(TableFrameworkDB).where(TableFrameworkDB.email == email)
+    result = await session.execute(request)
+    found_email = result.scalar_one_or_none()
+    if found_email is None:
+        return None
+    return found_email
 
