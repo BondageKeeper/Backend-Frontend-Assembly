@@ -1,4 +1,4 @@
-from pydantic import BaseModel , Field , field_validator
+ from pydantic import BaseModel , Field , field_validator
 from fastapi import status
 
 class TableFrameworkCO(BaseModel):
@@ -23,5 +23,16 @@ class TableSignInCO(BaseModel):
         if not re.findall(r'[\w\-.]+@(?:gmail\.com|yandex\.ru)',email):
             raise ValueError('Please , use yandex.ru or gmail.com domens!')
         return email
+
+class TableForgotPasswordCO(BaseModel):
+    email: str
+    @field_validator("email")
+    @classmethod
+    def check_domen(cls,email: str):
+        import re
+        if not re.findall(r'[\w\-.]+@(?:gmail\.com|yandex\.ru)',email):
+            raise ValueError('Please , use yandex.ru or gmail.com domens!')
+        return email
+
 
 
