@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 SMTP_SERVER = "smtp.yandex.ru"
 SMTP_PORT = 465
 
-SENDER_EMAIL = "[HERE IS YOUR MAIL]"
+SENDER_EMAIL = "[HERE IS YOUR MAIL!]"
 SENDER_PASSWORD = "thdoxplbwpsblplv"
 
 def send_recovery_email(receiver_email: str, new_password: str):
