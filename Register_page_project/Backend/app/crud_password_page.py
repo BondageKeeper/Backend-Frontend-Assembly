@@ -45,7 +45,7 @@ async def get_user_email(email: str,session: AsyncSession):
 
 from sqlalchemy import update
 async def update_user_password(nickname: str,new_hash: str,session: AsyncSession):
-    request = update(TableFrameworkCO).where(TableFrameworkDB.nickname == nickname).values(password=new_hash)
+    request = update(TableFrameworkDB).where(TableFrameworkDB.nickname == nickname).values(password=new_hash)
     await session.execute(request)
     await session.commit()
 
