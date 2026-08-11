@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,36 +65,50 @@
 
 
     ForgotPasswordLink.addEventListener('click', () => {
-    currentMode = 'restore'
+    currentMode = 'restore';
     NicknameBlock.classList.add('hidden');
+    NicknameInput.classList.add('hidden');
     PasswordBlock.classList.add('hidden');
+    ForgotPasswordLink.classList.add('hidden');
     SwitchModeBtn.innerText = 'Sign-in';
-    SignUpButton.innerText = 'Send Code';
+    SignUpButton.innerText = 'Send-Code';
     NicknameInput.value = '';
     PasswordInput.value = '';
     SecurityEstimation.classList.add('hidden');
     checkFields();
     });
 
+
     SwitchModeBtn.addEventListener('click', () => {
-    isSignUpMode = !isSignUpMode;
-    if (isSignUpMode) {
-    NicknameBlock.classList.remove('hidden');
-    NicknameInput.classList.remove('hidden');
-    SwitchModeBtn.innerText = 'Sign-in';
-    SignUpButton.innerText = 'Sign-up';
+    if (currentMode === 'restore') {
+        currentMode = 'sign-in';
+    } else if (currentMode === 'sign-up') {
+        currentMode = 'sign-in';
     } else {
-    NicknameBlock.classList.add('hidden');
-    NicknameInput.classList.add('hidden');
-    SwitchModeBtn.innerText = 'Sign-up';
-    SignUpButton.innerText = 'Sign-in';
+        currentMode = 'sign-up';
     }
 
     NicknameInput.value = '';
     EmailInput.value = '';
     PasswordInput.value = '';
 
-    })
+    if (currentMode === 'sign-up') {
+        NicknameBlock.classList.remove('hidden');
+        NicknameInput.classList.remove('hidden');
+        PasswordBlock.classList.remove('hidden');
+        ForgotPasswordLink.classList.remove('hidden');
+        SwitchModeBtn.innerText = 'Sign-in';
+        SignUpButton.innerText = 'Sign-up';
+    } else if (currentMode === 'sign-in') {
+        NicknameBlock.classList.add('hidden');
+        NicknameInput.classList.add('hidden');
+        PasswordBlock.classList.remove('hidden');
+        ForgotPasswordLink.classList.remove('hidden');
+        SwitchModeBtn.innerText = 'Sign-up';
+        SignUpButton.innerText = 'Sign-in';
+    }
+    checkFields();
+});
 
     const dependentButton = [
     document.getElementById('sign-up_main_button'),
@@ -164,12 +178,14 @@
         }
         }
     dependentButton.forEach(button => {
-        if (isSignUpMode) {
-        button.disabled = !(nicknameLength && isEmailValid && isPasswordValid);
-        } else {
+        if (currentMode === 'sign-up') {
+        button.disabled = !(nicknameLength >= 3 && isEmailValid && isPasswordValid);
+        } else if (currentMode === 'sign-in') {
         button.disabled = !(isEmailValid && isPasswordValid);
+        } else if (currentMode === 'restore') {
+        button.disabled = !(isEmailValid);
         }
-    })
+    });
     }
 
     NicknameInput.addEventListener('input',checkFields);
@@ -179,7 +195,7 @@
     checkFields();
 
     SignUpButton.addEventListener('click',() => {
-    if (isSignUpMode) {
+    if (currentMode === 'sign-up') {
     fetch('http://127.0.0.1:8080/password_page/create_password', {
         method: 'POST',
         headers: {
@@ -195,7 +211,7 @@
     .then(data => console.log(data))
     .catch(err => console.error(err));
 
-    } else {
+    } else if (currentMode === 'sign-in') {
     fetch('http://127.0.0.1:8080/password_page/sign-in', {
         method: 'POST',
         headers: {
@@ -215,9 +231,34 @@
     }
     })
     .catch(err => console.error(err));
+    } else if (currentMode === 'restore') {
+    fetch('http://127.0.0.1:8080/password_page/forgot_password', {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+            email: EmailInput.value.trim()
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(errData => {
+                throw new Error(errData.detail || "Unknown server error");
+            });
+    }
+    return res.json();
+    })
+    .then(data => {
+        console.log(data);
+        alert("Code has been sent to email!");
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error: " + err.message);
+    });
     }
     });
-
 
 </script>
 </body>
