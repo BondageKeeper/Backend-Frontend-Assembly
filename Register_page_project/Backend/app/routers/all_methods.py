@@ -1,4 +1,4 @@
- from fastapi import HTTPException , APIRouter , status , Depends
+from fastapi import HTTPException , APIRouter , status , Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from Backend_password_page.app.crud_password_page import keep_open_database
 from Backend_password_page.app.instance_password_page import TableFrameworkCO , TableSignInCO , TableForgotPasswordCO
@@ -15,7 +15,7 @@ async def create_password(instance: TableFrameworkCO,session: AsyncSession = Dep
     user_dict = instance.model_dump()
     user_dict["password"] = hash_password(user_dict["password"])
     new_user = await crud_password_page.create_password(instance=TableFrameworkCO(**user_dict),session=session)
-    return {"status":"success","user":user_dict["nickname"]}
+    return {"status_code": 200,"user": f'Welcome, {user_dict["nickname"]}!'}
 
 @router.post("/sign-in")
 async def sign_in(instance: TableSignInCO,session: AsyncSession = Depends(keep_open_database)):
@@ -47,13 +47,12 @@ async def forgot_password(instance: TableForgotPasswordCO,session: AsyncSession 
             new_hash = new_hashed_password,
             session = session
         )
-    mail_sending = send_recovery_email(receiver_email=found_email.email,new_password=new_password)
-    if not mail_sending:
-        HTTPException(status_code=500,detail="Failed to send email. Try again later.....")
+    email_sending = send_recovery_email(receiver_email=found_email.email,new_password=new_password)
+    if not email_sending:
+        raise HTTPException(status_code=500,detail="Failed to send email. Try again later.....")
     else:
         return {
             'status_code' : 200,
-            'comment' : 'a new password has been sent to your email!'
+            'comment' : 'new password has been sent to your email!'
         }
-
 
