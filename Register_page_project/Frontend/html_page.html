@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
 </head>
 <body class="h-screen p-0 m-0 bg-[#e0b0d5]">
 <main class="flex flex-col items-center justify-center min-h-screen gap-4 text-3xl">
+    <div class="" id="authentication_screen">
     <button id="switch_mode_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium border-2 border-[#e7e5e5] active:scale-[0.98]
     shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer px-5 py-2">Sign-in</button>
     <div class="flex flex-col gap-3 w-full max-w-sm px-4">
@@ -44,8 +45,21 @@
         transition_all disabled:pointer-events-none">Sign-up</button>
         </div>
     </div>
+    </div>
+
+    <div class="hidden" id="main_screen">
+        <button type="button" id="log-out_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium border-2
+        border-[#e7e5e5] active:scale-[0.98]
+        shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer px-5 py-2">Log-out</button>
+    </div>
 </main>
 <script>
+
+
+
+    let MainBackground = false;
+
+
 
     const NicknameInput = document.getElementById('nickname_input');
     const EmailInput = document.getElementById('email_input');
@@ -194,6 +208,25 @@
 
     checkFields();
 
+
+    function showMainMenu() {
+    if (MainBackground) {
+        document.getElementById('authentication_screen').classList.add('hidden');
+        document.getElementById('main_screen').classList.remove('hidden');
+    } else {
+        document.getElementById('authentication_screen').classList.remove('hidden');
+        document.getElementById('main_screen').classList.add('hidden');
+    }
+    }
+
+    //part of code of log-out:
+    const LogOutBtn = document.getElementById('log-out_button');
+    LogOutBtn.addEventListener('click', () => {
+    MainBackground = false;
+    showMainMenu();
+    });
+
+
     SignUpButton.addEventListener('click',() => {
     if (currentMode === 'sign-up') {
     fetch('http://127.0.0.1:8080/password_page/create_password', {
@@ -208,9 +241,13 @@
         })
     })
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => {console.log(data)
+    if (data.status_code === 200) {
+        alert(data.comment);
+        MainBackground = true;
+        showMainMenu();
+    }})
     .catch(err => console.error(err));
-
     } else if (currentMode === 'sign-in') {
     fetch('http://127.0.0.1:8080/password_page/sign-in', {
         method: 'POST',
@@ -226,6 +263,8 @@
     .then(data => {console.log(data);
     if (data.status_code === 200) {
         alert(data.comment);
+        MainBackground = true;
+        showMainMenu();
     } else {
         alert("Error" + (data.detail || "wrong data!"));
     }
