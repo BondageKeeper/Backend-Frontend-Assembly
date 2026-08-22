@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession , create_async_engine , async_sessionmaker
 from sqlalchemy.orm import  Mapped , mapped_column , DeclarativeBase
 from datetime import datetime
-from Backend_planner.app.instance_password_page import TableFrameworkCO , TableCreateCardsCO
+from Backend.app.instance_password_page import TableFrameworkCO , TableCreateCardsCO
 from sqlalchemy import select , ForeignKey , JSON
 
 class AlchemyLaunch(DeclarativeBase):
