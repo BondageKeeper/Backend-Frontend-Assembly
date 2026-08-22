@@ -24,7 +24,7 @@ class TableCreateCardsDB(AlchemyLaunch):
     progress_column: Mapped[list[str]] = mapped_column(JSON,default=list)
     done_column: Mapped[list[str]] = mapped_column(JSON,default=list)
 
-URL = 'postgresql+asyncpg://postgres:0631@localhost:5432/password_database'
+URL = 'postgresql+asyncpg://postgres:[WRITE HERE YOUR POSTGRES PASSWORD]@localhost:5432/password_database'
 engine_origin = create_async_engine(URL,echo=True)
 session_origin = async_sessionmaker(engine_origin,expire_on_commit=False)
 
