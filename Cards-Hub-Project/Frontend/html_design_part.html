@@ -67,7 +67,7 @@
         </div>
         <div class="flex items-end gap-3">
             <div class="w-20 shrink-0">
-                <label class="block text-xs font-semibold text-[#7be0ad] tracking-wider ">Steps</label>
+                <label class="block text-xs font-semibold text-[#7be0ad] tracking-wider">Steps</label>
                 <input type="number" id="ai_steps_part" min="1" max="5" value="3"
                        class="w-full px-2 py-2.5 bg-[#e7e5e5] border border-[#e7e5e5]/20 focus:border-[#7be0ad] rounded-xl
                        text-[#7be0ad] text-center focus:outline-none transition-all text-sm font-bold">
@@ -85,13 +85,13 @@
     </div>
     </div>
 
-
     <div id="dashboard_screen" class="hidden w-full min-h-screen px-6 py-8 flex flex-col gap-6">
 
     <div class="absolute top-5 left-5 flex flex-col items-center gap-3">
     <button type="button" id="save_cards_btn" class="text-sm rounded-lg font-medium border-2
     border-[#e7e5e5] active:scale-[0.98]
     shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer w-30 px-5 py-2">Save</button>
+
         <button type="button" id="delete_cards_btn" class="text-sm rounded-lg font-medium border-2
     border-[#e7e5e5] active:scale-[0.98]
     shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer w-30 px-5 py-2">Delete</button>
@@ -101,11 +101,6 @@
         border-[#e7e5e5] active:scale-[0.98]
         shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer w-30 px-5 py-2">Return</button>
     <div class="w-full max-w-6xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-4 pb-20">
-
-
-
-
-
     <!--AI plan -->
     <div class="bg-white/5 border border-[#7be0ad]/10 rounded-2xl p-4 flex flex-col min-h-[70vh]">
         <div class="flex justify-between items-center mb-4 border-b border-[#7be0ad]/10 pb-2">
@@ -115,7 +110,6 @@
         <!--For cards-->
         <div id="todo_column" class="flex-grow flex flex-col gap-3 p-1 rounded-xl transition-all"></div>
     </div>
-
     <!--In process-->
     <div class="bg-white/5 border border-[#7be0ad]/10 rounded-2xl p-4 flex flex-col min-h-[70vh]">
         <div class="flex justify-between items-center mb-4 border-b border-[#7be0ad]/10 pb-2">
@@ -125,9 +119,8 @@
         <!--For cards-->
         <div id="progress_column" class="flex-grow flex flex-col gap-3 p-1 rounded-xl transition-all"></div>
     </div>
-
     <!-- what is done: -->
-    <div class="bg-white/5 border border-[#7be0ad]/10 rounded-2xl p-4 flex flex-col min-h-[70vh]">
+    <div class="bg-white/5 border border-[#7be0ad]/10 rounded-2xl p-4 flex flex-col min-h-[90vh]">
         <div class="flex justify-between items-center mb-4 border-b border-[#7be0ad]/10 pb-2">
             <h3 class="font-bold text-emerald-300 text-sm tracking-wider uppercase">Done</h3>
             <span id="done_counter" class="bg-emerald-300/20 text-emerald-300 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
@@ -140,15 +133,22 @@
 
 
 
-
-
-
-
     <div id="settings_screen" class="hidden flex flex-col items-center justify-center min-h-screen gap-2 text-3xl">
         <label class="text-lg font-medium text-[#aee5d8]">Your nickname: <span id="settings_nickname"
         class="font-bold text-white"></span></label>
         <label class="text-lg font-medium text-[#aee5d8]">Your email: <span id="settings_email"
         class="font-bold text-white"></span></label>
+        <div class="flex flex-col">
+        <div class="flex">
+        <label class="text-lg font-medium text-[#aee5d8]">Write here new password:</label>
+        <span id="new_password_estimation" class="text-xs text-red-400 hidden">Minimum 4 characters required</span>
+        </div>
+            <input type="text" id="password_input_change" class="rounded-lg bg-transparent text-[#e7e5e5] border-3
+            border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
+            <button disabled type="button" id="apply_new_password" class="text-sm rounded-lg font-medium border-2 border-[#e7e5e5]
+            active:scale-[0.98] shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all
+            cursor-pointer">Change</button>
+        </div>
         <button type="button" id="return_to_main_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium border-2
         border-[#e7e5e5] active:scale-[0.98]
         shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer w-30 px-5 py-2">Return</button>
@@ -156,7 +156,5 @@
         border-[#e7e5e5] active:scale-[0.98]
         shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer px-5 py-2">Log-out</button>
     </div>
-
-
 </main>
 <script>
