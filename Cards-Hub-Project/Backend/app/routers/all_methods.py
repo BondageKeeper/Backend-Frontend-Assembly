@@ -14,7 +14,7 @@ router = APIRouter(prefix='/password_page')
 async def create_password(instance: TableFrameworkCO,session: AsyncSession = Depends(keep_open_database)):
     user_dict = instance.model_dump()
     user_dict["password"] = hash_password(user_dict["password"])
-    new_user = await crud_password_page.create_password(instance=TableFrameworkCO(**user_dict),session=session)
+    await crud_password_page.create_password(instance=TableFrameworkCO(**user_dict),session=session)
     return {"status_code": 200,"user": f'Welcome, {user_dict["nickname"]}!'}
 
 @router.post("/sign-in")
@@ -60,4 +60,25 @@ async def forgot_password(instance: TableForgotPasswordCO,session: AsyncSession 
 async def save_cards(instance: TableCreateCardsCO,session: AsyncSession = Depends(keep_open_database)):
     await crud_password_page.store_cards(instance=instance,session=session)
     return {"status_code" : 200}
+
+@router.get("/upload_cards/{user_email}")
+async def upload_cards(user_email: str,session: AsyncSession = Depends(keep_open_database)):
+    result = await crud_password_page.get_cards(user_email,session=session)
+    return result
+
+@router.delete("/delete_cards/{user_email}")
+async def delete_cards(user_email: str,session: AsyncSession = Depends(keep_open_database)):
+    result = await crud_password_page.drop_cards(user_email,session=session)
+    return result
+
+@router.post("/update_password")
+async def delete_cards(instance: TableSignInCO,session: AsyncSession = Depends(keep_open_database)):
+    user_email = instance.email
+    user_new_password = instance.password
+    new_hashed_password = hash_password(user_new_password)
+    await crud_password_page.change_password(user_email,new_password=new_hashed_password,session=session)
+    return {"status_code" : 200,"comment" : "password has been changed successfully!"}
+
+
+
 
