@@ -1,9 +1,87 @@
 
+    const PasswordInputChange = document.getElementById('password_input_change');
+    NewPasswordEstimation = document.getElementById('new_password_estimation');
+    let isNewPasswordValid = false;
+    const NewPasswordBtn = document.getElementById('apply_new_password');
+
+    PasswordInputChange.addEventListener('input', () => {
+    newPasswordLength = PasswordInputChange.value.length;
+    NewPasswordEstimation.classList.remove('text-red-400','text-orange-400','text-green-400');
+    hasNewPasswordLetters = /[a-zA-Z]/.test(PasswordInputChange.value);
+    hasNewPasswordDigits = /[0-9]/.test(PasswordInputChange.value);
+    if (newPasswordLength === 0) {
+        NewPasswordEstimation.classList.add('hidden');
+        NewPasswordBtn.disabled = true;
+    } else {
+        NewPasswordEstimation.classList.remove('hidden');
+        NewPasswordBtn.disabled = true;
+        if (newPasswordLength < 4) {
+            NewPasswordEstimation.innerText = 'Minimum 4 characters required';
+            NewPasswordEstimation.classList.add('text-red-400');
+            NewPasswordBtn.disabled = true;
+        }
+        else if (newPasswordLength >= 4 && newPasswordLength < 6) {
+            NewPasswordEstimation.innerText = 'Weak Password';
+            NewPasswordEstimation.classList.add('text-red-400');
+            NewPasswordBtn.disabled = true;
+        }
+        else if (newPasswordLength >= 6 && newPasswordLength < 8) {
+            if (hasNewPasswordLetters && hasNewPasswordDigits) {
+                NewPasswordEstimation.innerText = 'Medium Password';
+                NewPasswordEstimation.classList.add('text-orange-400');
+                NewPasswordBtn.disabled = false;
+                isNewPasswordValid = true;
+            } else {
+                NewPasswordEstimation.innerText = 'Weak Password';
+                NewPasswordEstimation.classList.add('text-red-400');
+                NewPasswordBtn.disabled = true;
+            }
+        }
+        else if (newPasswordLength >= 8) {
+            if (hasNewPasswordLetters && hasNewPasswordDigits) {
+                NewPasswordEstimation.innerText = 'Excellent Password';
+                NewPasswordEstimation.classList.add('text-green-400');
+                isNewPasswordValid = true;
+                NewPasswordBtn.disabled = false;
+            } else {
+                NewPasswordEstimation.innerText = 'Medium Password';
+                NewPasswordEstimation.classList.add('text-orange-400');
+                isNewPasswordValid = true;
+                NewPasswordBtn.disabled = false;
+            }
+    }
+    }
+    });
+
+    //Part of passport change
+    let user_email = document.getElementById('email_input');
+    NewPasswordBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (isNewPasswordValid) {
+        fetch('http://127.0.0.1:8080/password_page/update_password',{
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+            email : user_email.value.trim(),
+            password : PasswordInputChange.value.trim()
+    })
+    })
+    .then(res => res.json())
+    .then(ChangedData => {console.log(ChangedData);
+    alert("Password has been changed successfully!");
+    })
+    .catch(error => console.error('Description:', error));
+    }
+    });
+
+
+
     //Part of the dashboard:
     const TodoColumn = document.getElementById('todo_column');
     const ProgressColumn = document.getElementById('progress_column');
     const DoneColumn = document.getElementById('done_column');
-
 
     function renderAITasks(stepsArray) {
     // Clean old tasks
@@ -17,6 +95,7 @@
 
         //turn on a draggable effect(mode)
         taskCard.setAttribute('draggable', 'true');
+        //here we give a bunch of class parameters
         taskCard.className = "my_task_card bg-white/10 border border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between";
         taskCard.id = `task-${Date.now()}-${index}`;
 
@@ -42,6 +121,73 @@
     // here we put a number in counter(how much cards we totally have)
     document.getElementById('todo_counter').innerText = stepsArray.length;
 }
+
+    DeleteFullBtn = document.getElementById('delete_cards_btn');
+    DeleteFullBtn.addEventListener('click', () => {
+        user_email = document.getElementById('email_input');
+        fetch(`http://127.0.0.1:8080/password_page/delete_cards/${user_email.value.trim()}`,{
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(columnsData => {
+        document.getElementById('todo_column').innerHTML = '';
+        document.getElementById('progress_column').innerHTML = '';
+        document.getElementById('done_column').innerHTML = '';
+        updateCounters();
+        });
+    });
+
+
+    function RenderSingleCard(cardText,cardId,index) {
+        const taskCard = document.createElement('div');
+            taskCard.setAttribute('draggable',true);
+            taskCard.className = 'my_task_card bg-white/10 border border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between';
+            taskCard.id = `task-${Date.now()}-${cardId}-${index}`;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = cardText;
+            let cleanText = tempDiv.innerText.trim();
+            cleanText = cleanText.replace(/#\d+\s*$/, '').trim();
+
+            taskCard.innerHTML = `
+                <span>${cleanText}</span>
+                <span class="text-xs opacity-50 font-bold">#${index + 1}</span>
+            `;
+            taskCard.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', taskCard.id);
+            });
+            taskCard.addEventListener('dragend', () => {
+            updateCounters();
+            });
+        document.getElementById(cardId).appendChild(taskCard);
+    }
+
+
+    let MainBackground = false;
+    let isBoard = false;
+
+    function LoadAndRenderCards() {
+    user_email = document.getElementById('email_input');
+    fetch(`http://127.0.0.1:8080/password_page/upload_cards/${user_email.value.trim()}`)
+    .then(res => res.json())
+    .then(columnsData => {
+    document.getElementById('todo_column').innerHTML = '';
+    document.getElementById('progress_column').innerHTML = '';
+    document.getElementById('done_column').innerHTML = '';
+
+    columnsData.todo_column.forEach((cardText,index) => {
+        RenderSingleCard(cardText,'todo_column',index);
+    });
+    columnsData.progress_column.forEach((cardText,index) => {
+        RenderSingleCard(cardText,'progress_column',index);
+    });
+    columnsData.done_column.forEach((cardText,index) => {
+        RenderSingleCard(cardText,'done_column',index);
+    });
+    });
+    }
+
+
+
 
 
 
@@ -71,7 +217,7 @@
 
 
 
-    let MainBackground = false;
+
 
     const NicknameInput = document.getElementById('nickname_input');
     const EmailInput = document.getElementById('email_input');
@@ -241,6 +387,7 @@
         document.getElementById('settings_screen').classList.add('hidden');
         document.getElementById('main_screen').classList.remove('hidden');
         document.getElementById('dashboard_screen').classList.add('hidden');
+        LoadAndRenderCards();
     }
     else {
         document.getElementById('authentication_screen').classList.remove('hidden');
@@ -360,7 +507,7 @@
     })
 
     const DashBoard = document.getElementById('dashboard_button');
-    let isBoard = false;
+
     DashBoard.addEventListener('click', () => {
         isSettingsOn = false;
         isBoard = true;
@@ -411,7 +558,7 @@
 
 
         console.log('function sendCardToServer is being prepared to connect Backend');
-        console.log("Содержимое TODO:", todoText);
+        console.log("TODO:", todoText);
         fetch('http://127.0.0.1:8080/password_page/save_cards', {
             method: 'POST',
             headers: {
@@ -521,4 +668,4 @@
 
 </script>
 </body>
-</html>
+</html>   
