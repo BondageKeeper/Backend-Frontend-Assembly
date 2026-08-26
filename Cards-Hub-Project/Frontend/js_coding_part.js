@@ -1,5 +1,4 @@
-
-    const PasswordInputChange = document.getElementById('password_input_change');
+const PasswordInputChange = document.getElementById('password_input_change');
     NewPasswordEstimation = document.getElementById('new_password_estimation');
     let isNewPasswordValid = false;
     const NewPasswordBtn = document.getElementById('apply_new_password');
@@ -7,7 +6,7 @@
     PasswordInputChange.addEventListener('input', () => {
     newPasswordLength = PasswordInputChange.value.length;
     NewPasswordEstimation.classList.remove('text-red-400','text-orange-400','text-green-400');
-    hasNewPasswordLetters = /[a-zA-Z]/.test(PasswordInputChange.value);
+    hasNewPasswordLetters = /[a-zA-Zа-яА-ЯёЁ]/.test(PasswordInputChange.value);
     hasNewPasswordDigits = /[0-9]/.test(PasswordInputChange.value);
     if (newPasswordLength === 0) {
         NewPasswordEstimation.classList.add('hidden');
@@ -58,7 +57,7 @@
     NewPasswordBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (isNewPasswordValid) {
-        fetch('http://127.0.0.1:8080/password_page/update_password',{
+        fetch('https://cards-hub.website/password_page/update_password',{
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
@@ -96,7 +95,7 @@
         //turn on a draggable effect(mode)
         taskCard.setAttribute('draggable', 'true');
         //here we give a bunch of class parameters
-        taskCard.className = "my_task_card bg-white/10 border border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between";
+        taskCard.className = "my_task_card bg-white/10 border-3 border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between";
         taskCard.id = `task-${Date.now()}-${index}`;
 
         //add only text of the task including index(number of the card)
@@ -125,7 +124,7 @@
     DeleteFullBtn = document.getElementById('delete_cards_btn');
     DeleteFullBtn.addEventListener('click', () => {
         user_email = document.getElementById('email_input');
-        fetch(`http://127.0.0.1:8080/password_page/delete_cards/${user_email.value.trim()}`,{
+        fetch(`https://cards-hub.website/password_page/delete_cards/${user_email.value.trim()}`,{
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -141,7 +140,7 @@
     function RenderSingleCard(cardText,cardId,index) {
         const taskCard = document.createElement('div');
             taskCard.setAttribute('draggable',true);
-            taskCard.className = 'my_task_card bg-white/10 border border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between';
+            taskCard.className = 'my_task_card bg-white/10 border-3 border-[#7be0ad]/10 rounded-xl p-3 text-[#e7e5e5] text-sm font-medium shadow-sm hover:border-[#7be0ad]/50 transition-all cursor-grab active:cursor-grabbing flex items-center justify-between';
             taskCard.id = `task-${Date.now()}-${cardId}-${index}`;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = cardText;
@@ -167,7 +166,7 @@
 
     function LoadAndRenderCards() {
     user_email = document.getElementById('email_input');
-    fetch(`http://127.0.0.1:8080/password_page/upload_cards/${user_email.value.trim()}`)
+    fetch(`https://cards-hub.website/password_page/upload_cards/${user_email.value.trim()}`)
     .then(res => res.json())
     .then(columnsData => {
     document.getElementById('todo_column').innerHTML = '';
@@ -213,9 +212,6 @@
             GeneratePlanBtn.classList.remove('opacity-75','cursor-not-allowed');
         }
     });
-
-
-
 
 
 
@@ -308,7 +304,7 @@
             isNicknameLength = true;
 
         const currentPasswordValue = PasswordInput.value;
-        const hasLetters = /[a-zA-Z]/.test(currentPasswordValue);
+        const hasLetters = /[a-zA-Zа-яА-ЯёЁ]/.test(currentPasswordValue);
         const hasDigits = /[0-9]/.test(currentPasswordValue);
         const passwordLength = currentPasswordValue.length;
 
@@ -457,7 +453,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "deepseek/deepseek-v4-flash-0731",
+                model: "google/gemini-3.7-flash",
                 messages: [
                     {
                         role: "system",
@@ -496,8 +492,6 @@
     }
 }
 
-
-
     //Part of the Dashboard:
     const ReturnToMainButtonDashboard = document.getElementById('return_to_main_button2');
     ReturnToMainButtonDashboard.addEventListener('click', () => {
@@ -526,6 +520,10 @@
 
     const LogOutBtn = document.getElementById('log-out_button');
     LogOutBtn.addEventListener('click', () => {
+    SecurityEstimation.classList.add('hidden');
+    NicknameInput.value = '';
+    EmailInput.value = '';
+    PasswordInput.value = '';
     MainBackground = false;
     isBoard = false;
     isSettingsOn = false;
@@ -539,7 +537,6 @@
     isSettingsOn = false;
     showMainMenu();
     });
-
 
     //Part of storing the texts of cards:
     SaveCardsBtn = document.getElementById('save_cards_btn');
@@ -559,7 +556,7 @@
 
         console.log('function sendCardToServer is being prepared to connect Backend');
         console.log("TODO:", todoText);
-        fetch('http://127.0.0.1:8080/password_page/save_cards', {
+        fetch('https://cards-hub.website/password_page/save_cards', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
@@ -573,26 +570,9 @@
         })
     })
 
-
-
-
-
-
-    //this is an identifier of timeout
-    //let SaveTimeOut;
-
-    //function timeout_assignment {
-    //    clearTimeout(SaveTimeOut);
-    //    SaveTimeOut = setTimeout(() => {
-    //        sendCardToServer();
-    //    },2000);
-    //}
-
-
-
     SignUpButton.addEventListener('click',() => {
     if (currentMode === 'sign-up') {
-    fetch('http://127.0.0.1:8080/password_page/create_password', {
+    fetch('https://cards-hub.website/password_page/create_password', {
         method: 'POST',
         headers: {
         'Content-Type' : 'application/json'
@@ -603,7 +583,14 @@
             password: PasswordInput.value
         })
     })
-    .then(res => res.json())
+    .then(res => {
+    if (!res.ok) {
+        return res.json().then(errData => {
+             throw new Error(errData.detail);
+        });
+    }
+    return res.json();
+    })
     .then(data => {console.log(data)
     if (data.status_code === 200) {
         alert(data.comment);
@@ -612,9 +599,13 @@
         MainBackground = true;
         showMainMenu();
     }})
-    .catch(err => console.error(err));
+    .catch(err =>  {
+    console.error(err) ;
+    alert("Error: "+ err.message);
+    });
+
     } else if (currentMode === 'sign-in') {
-    fetch('http://127.0.0.1:8080/password_page/sign-in', {
+    fetch('https://cards-hub.website/password_page/sign-in', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
@@ -638,7 +629,7 @@
     })
     .catch(err => console.error(err));
     } else if (currentMode === 'restore') {
-    fetch('http://127.0.0.1:8080/password_page/forgot_password', {
+    fetch('https://cards-hub.website/password_page/forgot_password', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
@@ -668,4 +659,4 @@
 
 </script>
 </body>
-</html>   
+</html>
