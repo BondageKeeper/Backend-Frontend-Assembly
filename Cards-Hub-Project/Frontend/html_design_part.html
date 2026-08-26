@@ -131,30 +131,37 @@
     </div>
     </div>
 
-
-
-    <div id="settings_screen" class="hidden flex flex-col items-center justify-center min-h-screen gap-2 text-3xl">
-        <label class="text-lg font-medium text-[#aee5d8]">Your nickname: <span id="settings_nickname"
-        class="font-bold text-white"></span></label>
-        <label class="text-lg font-medium text-[#aee5d8]">Your email: <span id="settings_email"
-        class="font-bold text-white"></span></label>
-        <div class="flex flex-col">
-        <div class="flex">
-        <label class="text-lg font-medium text-[#aee5d8]">Write here new password:</label>
-        <span id="new_password_estimation" class="text-xs text-red-400 hidden">Minimum 4 characters required</span>
-        </div>
-            <input type="text" id="password_input_change" class="rounded-lg bg-transparent text-[#e7e5e5] border-3
-            border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-colors">
-            <button disabled type="button" id="apply_new_password" class="text-sm rounded-lg font-medium border-2 border-[#e7e5e5]
-            active:scale-[0.98] shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all
-            cursor-pointer">Change</button>
-        </div>
-        <button type="button" id="return_to_main_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium border-2
-        border-[#e7e5e5] active:scale-[0.98]
-        shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer w-30 px-5 py-2">Return</button>
-        <button type="button" id="log-out_button" class="mt-3 text-sm rounded-lg font-medium border-2
-        border-[#e7e5e5] active:scale-[0.98]
-        shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad] transition-all cursor-pointer px-5 py-2">Log-out</button>
+    <div id="settings_screen" class="hidden justify-start flex flex-col w-full text-left gap-4 text-3xl p-8 items-start select-none">
+        <div class="absolute top-5 left-5">
+    <div class="flex flex-col gap-2 max-w-sm w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow-lg">
+        <label class="text-lg font-medium text-[#aee5d8]">Your nickname: <span id="settings_nickname" class="font-bold text-white ml-1"></span></label>
+        <label class="text-lg font-medium text-[#aee5d8]">Your email: <span id="settings_email" class="font-bold text-white ml-1"></span></label>
     </div>
+    <div class="flex flex-col gap-3 max-w-sm w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow-lg mt-3">
+        <div class="flex justify-between items-baseline">
+            <label class="text-lg font-medium text-[#aee5d8]">New password:</label>
+            <span id="new_password_estimation" class="text-xs text-red-400 hidden">Minimum 4 characters required</span>
+        </div>
+        <input type="text" id="password_input_change" class="w-full rounded-lg text-[#e7e5e5] border-2
+        border-[#e7e5e5] focus:outline-none focus:border-[#7be0ad] transition-all px-3 py-1.5 text-base">
+        <button disabled type="button" id="apply_new_password" class="w-full text-sm rounded-lg font-medium border-2
+        border-[#e7e5e5] shadow-md text-[#7be0ad] bg-[#e7e5e5] transition-all py-2 enabled:hover:border-[#7be0ad]
+        enabled:active:scale-[0.98] disabled:opacity-50">Change</button>
+    </div>
+            <div class="mt-3 flex flex-col gap-3 max-w-sm w-full
+            bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow-lg">
+    <div class="flex flex-col gap-1">
+        <label class="text-lg font-medium text-[#aee5d8]">Account settings:</label>
+        <span class="text-xs text-[#e7e5e5]/50 font-medium">Are you sure you want to log out?</span>
+    </div>
+    <button type="button" id="log-out_button" class="w-full text-sm rounded-lg font-medium border-2
+     border-red-400/25 active:scale-[0.98] shadow-md text-red-400 hover:bg-red-500/10 hover:border-red-400
+     transition-all cursor-pointer py-2 bg-black/5">Log-out</button>
+</div>
+        </div>
+    <button type="button" id="return_to_main_button" class="absolute top-5 right-5 text-sm rounded-lg font-medium
+    border-2 border-[#e7e5e5] active:scale-[0.98] shadow-md text-[#7be0ad] bg-[#e7e5e5] hover:border-[#7be0ad]
+    transition-all cursor-pointer w-30 px-5 py-2">Return</button>
+</div>
 </main>
 <script>
