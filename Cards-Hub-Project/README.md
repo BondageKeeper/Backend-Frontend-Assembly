@@ -40,7 +40,7 @@ change old password or recovery-password in 'textarea' and log out any time he o
 * **Regex(re)**
 * **Bcrypt** -> to hash the password of user for security reasons
 * **Faker** -> to create a recovery-password due to method `fake.bothify(text='')`
-* **Smtplib** -> to connect with the server of Google of Yandex
+* **Smtplib** -> to connect with the server of Google or Yandex
  
 ## ⚡ Key Features:
 * **Password Recovery**
