@@ -20,7 +20,7 @@ Also, user can choose amount of steps from 2 to 5 and this amount of steps will 
 
 ### 📷 Dashboard window:
 <img width="1919" height="905" alt="dashboard_window" src="https://github.com/user-attachments/assets/d8898c9a-3e2b-4fa0-89a3-d050e7108edd" />
-Here user get those cards and can drag them from one table to another if he completed(or didn't complete) a tasks in the cards,it's possible to drag them
+Here user get those cards and can drag them from one table to another if he completed(or didn't complete) tasks in the cards,it's possible to drag them
 in any sequence. If user wants to keep these cards in database - he or she just should press 'Save' button and every card will be saved successfully.
 If user wants to delete these cards - he or she just should press 'Delete' button and any data of these cards will be deleted from screen and database.
 
