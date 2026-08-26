@@ -9,7 +9,7 @@ In summary I really enjoyed doing this project and final view of the project mak
 
 ### 📷 Registration window:
 <img width="1919" height="925" alt="Registration_window(sign-up)" src="https://github.com/user-attachments/assets/87ae3f34-ba84-4e68-82d8-45c78a52dcc5" />
-#### Here user can create a completely new account or can sing in the "old" account or if user can't recall password - he or she can easily restore it by 
+#### Here user can create a completely new account or can sign in the "old" account or if user can't recall password - he or she can easily restore it by 
 writing only their email where they get a new recovery-password.These all things related to Registration window in my project.
 
 ### 📷 Request window:
