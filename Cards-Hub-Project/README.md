@@ -15,7 +15,7 @@ writing only their email where they get a new recovery-password.These all things
 ### 📷 Request window:
 <img width="1919" height="917" alt="request_window" src="https://github.com/user-attachments/assets/ca687970-47f9-4a70-b721-6feca01b34cb" />
 In this `textarea` user writes a topic,question,problem,etc and presses button 'generate' which immediately launches a request to AI API(I used Google).
-After API gave us a response which is divided into steps - these steps go to `Dashboard`. User can easily clean text in `textarea` by pressing `clean`.
+After API gave us a response which is divided into steps - these steps go to `Dashboard` . User can easily clean text in `textarea` by pressing `clean` .
 Also, user can choose amount of steps from 2 to 5 and this amount of steps will turn into amount of unique cards in `Dashboard` panel.
 
 ### 📷 Dashboard window:
