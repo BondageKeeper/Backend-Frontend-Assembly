@@ -52,7 +52,7 @@ change old password or recovery-password in 'textarea' and log out any time he o
 
 ## 🎯 Conclusion:
 I think this project can be in some way useful because user can immediately get a plan how to cook,repair,study,understand,make particular things,
-moreover this plan divided into cards and by dragging this cards user can monitor his or her progress which is kind of convenient. I hope this project 
+moreover this plan divided into cards and by dragging this cards user can monitor his or her progress. I hope this project 
 will attract some attention and make my github better.
 
 ## 🌐 Website domain:
