@@ -1,4 +1,4 @@
-
+ 
     const PasswordInputChange = document.getElementById('password_input_change');
     NewPasswordEstimation = document.getElementById('new_password_estimation');
     let isNewPasswordValid = false;
@@ -160,6 +160,7 @@
             updateCounters();
             });
         document.getElementById(cardId).appendChild(taskCard);
+        updateCounters();
     }
 
 
@@ -378,6 +379,7 @@
         document.getElementById('settings_screen').classList.add('hidden');
         document.getElementById('main_screen').classList.add('hidden');
         document.getElementById('dashboard_screen').classList.remove('hidden');
+        updateCounters();
     } else if (MainBackground) {
         document.getElementById('authentication_screen').classList.add('hidden');
         document.getElementById('settings_screen').classList.add('hidden');
