@@ -1,4 +1,5 @@
-const PasswordInputChange = document.getElementById('password_input_change');
+
+    const PasswordInputChange = document.getElementById('password_input_change');
     NewPasswordEstimation = document.getElementById('new_password_estimation');
     let isNewPasswordValid = false;
     const NewPasswordBtn = document.getElementById('apply_new_password');
@@ -145,12 +146,13 @@ const PasswordInputChange = document.getElementById('password_input_change');
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = cardText;
             let cleanText = tempDiv.innerText.trim();
-            cleanText = cleanText.replace(/#\d+\s*$/, '').trim();
+            cleanText = cleanText.replace(/#\d+\s*[Яя]?$/, '').trim();
 
             taskCard.innerHTML = `
                 <span>${cleanText}</span>
                 <span class="text-xs opacity-50 font-bold">#${index + 1}</span>
             `;
+
             taskCard.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('text/plain', taskCard.id);
             });
@@ -163,6 +165,7 @@ const PasswordInputChange = document.getElementById('password_input_change');
 
     let MainBackground = false;
     let isBoard = false;
+
 
     function LoadAndRenderCards() {
     user_email = document.getElementById('email_input');
@@ -184,10 +187,6 @@ const PasswordInputChange = document.getElementById('password_input_change');
     });
     });
     }
-
-
-
-
 
 
     //Part of main inputs in the main background:
@@ -362,6 +361,7 @@ const PasswordInputChange = document.getElementById('password_input_change');
 
     checkFields();
 
+
     function showMainMenu() {
     if (MainBackground && isSettingsOn) {
         document.getElementById('authentication_screen').classList.add('hidden');
@@ -383,7 +383,13 @@ const PasswordInputChange = document.getElementById('password_input_change');
         document.getElementById('settings_screen').classList.add('hidden');
         document.getElementById('main_screen').classList.remove('hidden');
         document.getElementById('dashboard_screen').classList.add('hidden');
-        LoadAndRenderCards();
+        const existingCards = document.querySelectorAll('.my_task_card');
+        if (existingCards.length > 0 )  {
+            console.log('There are cards')
+        } else {
+            LoadAndRenderCards();
+        }
+
     }
     else {
         document.getElementById('authentication_screen').classList.remove('hidden');
@@ -629,7 +635,7 @@ const PasswordInputChange = document.getElementById('password_input_change');
     })
     .catch(err => console.error(err));
     } else if (currentMode === 'restore') {
-    fetch('https://cards-hub.website/password_page/forgot_password', {
+    fetch('http', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
